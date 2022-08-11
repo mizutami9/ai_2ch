@@ -44,7 +44,7 @@ def sample_mn(start_letter='ア', max_length=100):
 
     input = inputTensor(sample_char_idx)
 
-    hidden = model.initHidden()
+    # hidden = model.initHidden()
 
     m = 3
     n = 3
@@ -145,6 +145,6 @@ if __name__ == '__main__':
     model.eval()
     # with open('./models/model_narou_char_max_iter.pkl', 'rb') as f:
     #     # model = cloudpickle.load(f)
-    torch.load("./models/word_narou_char_000041.model")
+    model.load_state_dict(torch.load("./models/word_narou_char_000041.model"))
 
     main()
