@@ -7,11 +7,10 @@ import  codecs
 import re
 
 files = glob.glob("./2ch_thread/*")
-
-for file in files:
-    print(file)
-    with codecs.open(file, 'r', encoding='utf-8') as f:
-        with open('2ch_scraped_list.txt', 'w') as g:
+with open('2ch_scraped_list.txt', 'w') as g:
+    for file in files:
+        print(file)
+        with codecs.open(file, 'r', encoding='utf-8') as f:
             list_flag=0
             for line in f:
                 if list_flag == 1 and '<hr>' in line:

@@ -133,7 +133,7 @@ def samples(start_letters='アイウ'):
 
 
 def main():
-    samples(u'最強')
+    samples(u'あ')
 
 
 if __name__ == '__main__':
