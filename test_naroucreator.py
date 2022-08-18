@@ -44,7 +44,7 @@ def sample_mn(start_letter='ア', max_length=100):
 
     input = inputTensor(sample_char_idx)
 
-    # hidden = model.initHidden()
+    hidden = model.initHidden()
 
     m = 3
     n = 3
@@ -138,13 +138,13 @@ def main():
 
 if __name__ == '__main__':
     # load dic
-    char2idx = pickle.load(open("dic.p", "rb"))
+    char2idx = pickle.load(open("2ch_scraped_list.txt" + "_dic.p", "rb"))
     idx2char = {v: k for k, v in char2idx.items()}
     # build model
     model = LSTM(input_dim=len(char2idx), embed_dim=256, hidden_dim=256)
     model.eval()
     # with open('./models/model_narou_char_max_iter.pkl', 'rb') as f:
     #     # model = cloudpickle.load(f)
-    model.load_state_dict(torch.load("./models/word_narou_char_000044.model"))
+    torch.load('./models/2ch_char' + "_000001.model")
 
     main()
