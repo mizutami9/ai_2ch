@@ -148,7 +148,7 @@ if __name__ == '__main__':
     # with open('./models/model_narou_char_max_iter.pkl', 'rb') as f:
     #     # model = cloudpickle.load(f)
     # model.load_state_dict(torch.load('./models/titledata.txt' + "_000037.model"))
-    model.load_state_dict(torch.load('./models/2ch_scraped_list.txt' + "_000054.model"))
+    model.load_state_dict(torch.load('./models/2ch_scraped_list.txt' + "_000080.model"))
 
     main()
 
