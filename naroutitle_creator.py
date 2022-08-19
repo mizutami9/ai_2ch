@@ -33,7 +33,7 @@ class LSTM(nn.Module):
                 autograd.Variable(torch.zeros(1, 1, self.hidden_dim)))
 
 
-def train(model, critation, input, target):
+def train(model, criterion, input, target):
     hidden = model.initHidden()
 
     model.zero_grad()
@@ -52,17 +52,16 @@ def inputTensor(input_idx):
     return autograd.Variable(tensor)
 
 
-def targetTensor(input_idx):
+def targetTensor(input_idx, char_idx):
     input_idx = input_idx[1:]
-    input_idx.append(char2idx['EOS'])
+    input_idx.append(char_idx['EOS'])
     tensor = torch.LongTensor(input_idx)
     return autograd.Variable(tensor)
 
 
-if __name__ == '__main__':
-
+def train_main(train_data, e_dim=256, h_dim=256):
     titles = []
-    with open('titledata.txt', 'r')as f:
+    with open(train_data, 'r') as f:
         for i in f:
             titles.append(i)
     # print(titles)
@@ -73,20 +72,20 @@ if __name__ == '__main__':
     char2idx['EOS'] = len(char2idx)
 
     # save dictionary
-    pickle.dump(char2idx, open("dic.p", "wb"))
+    pickle.dump(char2idx, open(train_data + "_dic.p", "wb"))
 
     names_idx = [[char2idx[char_str] for char_str in name_str] for name_str in titles]
     # print(names_idx)
 
     # build model
-    model = LSTM(input_dim=len(char2idx), embed_dim=256, hidden_dim=256)
+    model = LSTM(input_dim=len(char2idx), embed_dim=e_dim, hidden_dim=h_dim)
     criterion = nn.NLLLoss()
     optimizer = optim.RMSprop(model.parameters(), lr=0.001)
 
     n_iters = 1000
     all_losses = []
 
-    best_loss=1000000
+    best_loss = 1000000
     no_improve_iter = 0
 
     for iter in range(1, n_iters + 1):
@@ -98,7 +97,7 @@ if __name__ == '__main__':
 
         for i, name_idx in enumerate(names_idx):
             inputa = inputTensor(name_idx)
-            target = targetTensor(name_idx)
+            target = targetTensor(name_idx, char2idx)
 
             loss = train(model, criterion, inputa, target)
             total_loss += loss
@@ -108,14 +107,19 @@ if __name__ == '__main__':
         print(iter, "/", n_iters)
         print("loss {:.4}".format(float(total_loss / len(names_idx))))
         if best_loss > float(total_loss / len(names_idx)):
-            best_loss=float(total_loss / len(names_idx))
-            no_improve_iter=0
-            torch.save(model.state_dict(), "./models/word_narou_char_{:06}.model".format(iter))
+            best_loss = float(total_loss / len(names_idx))
+            no_improve_iter = 0
+            torch.save(model.state_dict(), "./models/" + train_data + "_{:06}.model".format(iter))
         else:
-            no_improve_iter+=1
-            if no_improve_iter>30:
+            no_improve_iter += 1
+            if no_improve_iter > 30:
                 print('early stop!')
                 break
 
     # with open('./model/model_narou_char_1000.pkl', 'wb')as f:
     #     cloudpickle.dump(model, f)
+
+
+if __name__ == '__main__':
+    # train_main("titledata.txt", e_dim=256, h_dim=256)
+    train_main("2ch_scraped_list.txt", e_dim=256, h_dim=256)
