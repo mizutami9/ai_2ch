@@ -28,9 +28,8 @@ def targetTensor(input_idx, char_idx):
 
 
 char_idx = {1: 1, 2: 2, 'EOS': 3}
-tem = [[1,2,3],[2,2,3],[3,2,3]]
+tem = [[1,2,4],[2,3,4],[3,4,5]]
 
-res =
+res = [targetTensor(i,char_idx) for i in tem]
 
-for i in map(targetTensor,tem,char_idx):
-    print(i)
+print(res)

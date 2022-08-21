@@ -117,6 +117,9 @@ def train_main(train_data, e_dim=256, h_dim=256):
         for i, name_idx in enumerate(names_idx):
             inputa = inputTensor(name_idx)
             target = targetTensor(name_idx, char2idx)
+            # res = [targetTensor(tar, char_idx) for tar in name_idx]
+
+            # TODO バッチのaxis操作忘れず実装
 
             loss = train(model, criterion, inputa, target)
             total_loss += loss
