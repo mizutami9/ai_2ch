@@ -152,7 +152,7 @@ def train_main(train_data, e_dim=256, h_dim=256, batch_size=256):
         else:
             no_improve_iter += 1
             if no_improve_iter > 30:
-                print('early stop!')
+                print('early stop!!')
                 break
 
     # with open('./model/model_narou_char_1000.pkl', 'wb')as f:
@@ -162,3 +162,4 @@ def train_main(train_data, e_dim=256, h_dim=256, batch_size=256):
 if __name__ == '__main__':
     # train_main("titledata.txt", e_dim=256, h_dim=256)
     train_main("2ch_scraped_list_extby_YouTube.txt", e_dim=256, h_dim=256, batch_size=53)
+
