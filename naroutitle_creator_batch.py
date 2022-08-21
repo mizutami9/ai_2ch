@@ -23,25 +23,26 @@ class LSTM(nn.Module):
         embeds = self.embeds(input)
         emb_shape = embeds.shape
         lstm_out, hidden = self.lstm(
-            embeds.view(emb_shape[0], -1, emb_shape[1]), hidden)
-        output = self.linear(lstm_out.view(len(input), -1))
+            embeds.view(emb_shape[0], -1, emb_shape[2]), hidden)
+        input_shape = input.shape
+        output = self.linear(lstm_out.view(input_shape[0], input_shape[1], -1))
         output = self.dropout(output)
         output = self.softmax(output)
         return output, hidden
 
-    def initHidden(self):
-        return (autograd.Variable(torch.zeros(1, 1, self.hidden_dim)),
-                autograd.Variable(torch.zeros(1, 1, self.hidden_dim)))
+    def initHidden(self, batch_size=256):
+        return (autograd.Variable(torch.zeros(1, batch_size, self.hidden_dim)),
+                autograd.Variable(torch.zeros(1, batch_size, self.hidden_dim)))
 
 
 def train(model, criterion, input, target):
-    hidden = model.initHidden()
+    hidden = model.initHidden(input.shape[1])
 
     model.zero_grad()
 
     output, _ = model(input, hidden)
     _, predY = torch.max(output.data, 1)
-    loss = criterion(output, target)
+    loss = criterion(output.permute(1,2,0), target.permute(1,0))
 
     loss.backward()
 
@@ -56,8 +57,9 @@ def inputTensor(input_idx):
 def targetTensor(input_idx, char_idx):
     input_idx = input_idx[1:]
     input_idx.append(char_idx['EOS'])
-    tensor = torch.LongTensor(input_idx)
-    return autograd.Variable(tensor)
+    # tensor = torch.LongTensor(input_idx)
+    # return autograd.Variable(tensor)
+    return input_idx
 
 
 def padding_data(in_data, char2idx):
@@ -76,12 +78,14 @@ def padding_data(in_data, char2idx):
 
 
 def data2batch(data, batch_size=256):
-    batch_data=[]
-    for i in range(0, len(data), batch_size):
-        batch_data.append(data[i:i+batch_size])
+    batch_data = []
+    for i in range(0, len(data) - batch_size, batch_size):
+        batch_data.append(data[i:i + batch_size])
+    batch_data.append(data[len(data) // batch_size * batch_size:])
+    return batch_data
 
 
-def train_main(train_data, e_dim=256, h_dim=256):
+def train_main(train_data, e_dim=256, h_dim=256, batch_size=256):
     titles = []
     with open(train_data, 'r') as f:
         for i in f:
@@ -118,16 +122,21 @@ def train_main(train_data, e_dim=256, h_dim=256):
         # data shuffle
         random.shuffle(names_idx)
 
-        names_idx = data2batch(names_idx)
+        # data2batch(names_idx)
+
+        names_idx_batch = data2batch(names_idx, batch_size)
 
         total_loss = 0
 
-        for i, name_idx in enumerate(names_idx):
+        for i, name_idx in enumerate(names_idx_batch):
             inputa = inputTensor(name_idx)
-            target = targetTensor(name_idx, char2idx)
-            # res = [targetTensor(tar, char_idx) for tar in name_idx]
+            # target = targetTensor(name_idx, char2idx)
+            target = [targetTensor(tar, char2idx) for tar in name_idx]
+            target = autograd.Variable(torch.LongTensor(target))
 
-            # TODO バッチのaxis操作忘れず実装
+            # バッチのaxis操作忘れず実装
+            inputa = inputa.permute(1, 0)
+            target = target.permute(1, 0)
 
             loss = train(model, criterion, inputa, target)
             total_loss += loss
@@ -135,7 +144,7 @@ def train_main(train_data, e_dim=256, h_dim=256):
             optimizer.step()
 
         print(iter, "/", n_iters)
-        print("loss {:.4}".format(float(total_loss / len(names_idx))))
+        print("loss {:.4}".format(float(total_loss / ((len(names_idx)//batch_size)+1))))
         if best_loss > float(total_loss / len(names_idx)):
             best_loss = float(total_loss / len(names_idx))
             no_improve_iter = 0
@@ -152,4 +161,4 @@ def train_main(train_data, e_dim=256, h_dim=256):
 
 if __name__ == '__main__':
     # train_main("titledata.txt", e_dim=256, h_dim=256)
-    train_main("2ch_scraped_list_extby_YouTube.txt", e_dim=256, h_dim=256)
+    train_main("2ch_scraped_list_extby_YouTube.txt", e_dim=256, h_dim=256, batch_size=53)

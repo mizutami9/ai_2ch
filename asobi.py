@@ -34,5 +34,7 @@
 #
 # print(res)
 
-l
-print()
+res=list(range(0, 100-49,49))
+res1=list(range(0, 100))
+
+print(list(range(0, 100-49,49)),res1[100//49*49:])
