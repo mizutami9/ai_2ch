@@ -134,13 +134,13 @@ def samples(start_letters='アイウ'):
 
 
 def main():
-    samples(u'あいうえお')
+    samples(u'あい')
 
 
 if __name__ == '__main__':
     # load dic
     # char2idx = pickle.load(open("titledata.txt_dic.p", "rb"))
-    char2idx = pickle.load(open("2ch_scraped_list.txt" + "_dic.p", "rb"))
+    char2idx = pickle.load(open("2ch_scraped_list_extby_YouTube.txt" + "_dic.p", "rb"))
     idx2char = {v: k for k, v in char2idx.items()}
     # build model
     model = LSTM(input_dim=len(char2idx), embed_dim=256, hidden_dim=256)
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     # with open('./models/model_narou_char_max_iter.pkl', 'rb') as f:
     #     # model = cloudpickle.load(f)
     # model.load_state_dict(torch.load('./models/titledata.txt' + "_000037.model"))
-    model.load_state_dict(torch.load('./models/2ch_scraped_list.txt' + "_000003.model"))
+    model.load_state_dict(torch.load('./models/2ch_scraped_list_extby_YouTube.txt' + "_000002.model"))
 
     main()
 

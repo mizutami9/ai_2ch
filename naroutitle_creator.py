@@ -122,4 +122,4 @@ def train_main(train_data, e_dim=256, h_dim=256):
 
 if __name__ == '__main__':
     # train_main("titledata.txt", e_dim=256, h_dim=256)
-    train_main("2ch_scraped_list.txt", e_dim=256, h_dim=256)
+    train_main("2ch_scraped_list_extby_YouTube.txt", e_dim=256, h_dim=256)

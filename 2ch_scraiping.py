@@ -28,6 +28,8 @@ with open('2ch_scraped_list.txt', 'w') as g:
                     tmp=re.sub('&#[0-9]+;','',tmp)
                     #\ufffd対策
                     tmp = re.sub('\ufffd',' ',tmp)
+                    # 改行前の半角スペース削除
+                    tmp = re.sub(' \n','\n',tmp)
                     # debug_c +=1
                     g.write(tmp)
                 if list_flag == 2:

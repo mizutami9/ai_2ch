@@ -3,13 +3,34 @@
 # m=MeCab.Tagger('-Ochasen')
 # print((MeCab.Tagger('-Owakati')).parse('すももももももももものうち'))
 
-import requests
+# import requests
+#
+# i = 1
+#
+# site_data = requests.get("https://eagle.5ch.net/livejupiter/kako/kako0500.html".format(i))
+# # site_data = requests.get("https://eagle.5ch.net/livejupiter/kako/kako{:04}.html".format(i))
+# site_data.encoding = site_data.apparent_encoding
+#
+# with open("2ch_thread/a.html", "w", encoding='utf-8') as f:
+#     f.write(site_data.text)
 
-i = 1
+# s = "youtuber"
+# t = ["hoge", "fuga", "youtubee"]
+# ins_f = lambda x:x in s
+# if any(map(ins_f, t)):
+#     print("fizz!")
 
-site_data = requests.get("https://eagle.5ch.net/livejupiter/kako/kako0500.html".format(i))
-# site_data = requests.get("https://eagle.5ch.net/livejupiter/kako/kako{:04}.html".format(i))
-site_data.encoding = site_data.apparent_encoding
+def targetTensor(input_idx, char_idx):
+    input_idx = input_idx[1:]
+    input_idx.append(char_idx['EOS'])
+    # tensor = torch.LongTensor(input_idx)
+    return input_idx
 
-with open("2ch_thread/a.html", "w", encoding='utf-8') as f:
-    f.write(site_data.text)
+
+char_idx = {1: 1, 2: 2, 'EOS': 3}
+tem = [[1,2,3],[2,2,3],[3,2,3]]
+
+res =
+
+for i in map(targetTensor,tem,char_idx):
+    print(i)
