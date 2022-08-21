@@ -40,8 +40,9 @@ def inputTensor(input_idx):
     return autograd.Variable(tensor)
 
 
-def sample_mn(start_letter='ア', max_length=100):
+def sample_mn(char2idx,model,start_letter='ア', max_length=100):
     sample_char_idx = [char2idx[start_letter]]
+    idx2char = {v: k for k, v in char2idx.items()}
 
     input = inputTensor(sample_char_idx)
 
@@ -105,8 +106,9 @@ def sample_mn(start_letter='ア', max_length=100):
     return all_output
 
 
-def sample(start_letter='ア', max_length=100):
+def sample(char2idx,model, start_letter='ア', max_length=100):
     sample_char_idx = [char2idx[start_letter]]
+    idx2char = {v: k for k, v in char2idx.items()}
 
     input = inputTensor(sample_char_idx)
 
@@ -128,13 +130,13 @@ def sample(start_letter='ア', max_length=100):
     return output_name
 
 
-def samples(start_letters='アイウ'):
+def samples(char2idx,model,start_letters='アイウ'):
     for start_letter in start_letters:
-        pprint.pprint(sample_mn(start_letter))
+        pprint.pprint(sample_mn(char2idx,model,start_letter))
 
 
-def main():
-    samples(u'あい')
+def main(char2idx,model):
+    samples(char2idx,model,u'あい')
 
 
 if __name__ == '__main__':
@@ -150,5 +152,5 @@ if __name__ == '__main__':
     # model.load_state_dict(torch.load('./models/titledata.txt' + "_000037.model"))
     model.load_state_dict(torch.load('./models/2ch_scraped_list_extby_YouTube.txt' + "_000002.model"))
 
-    main()
+    main(char2idx,model)
 

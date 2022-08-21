@@ -20,16 +20,19 @@
 # if any(map(ins_f, t)):
 #     print("fizz!")
 
-def targetTensor(input_idx, char_idx):
-    input_idx = input_idx[1:]
-    input_idx.append(char_idx['EOS'])
-    # tensor = torch.LongTensor(input_idx)
-    return input_idx
+# def targetTensor(input_idx, char_idx):
+#     input_idx = input_idx[1:]
+#     input_idx.append(char_idx['EOS'])
+#     # tensor = torch.LongTensor(input_idx)
+#     return input_idx
+#
+#
+# char_idx = {1: 1, 2: 2, 'EOS': 3}
+# tem = [[1,2,4],[2,3,4],[3,4,5]]
+#
+# res = [targetTensor(i,char_idx) for i in tem]
+#
+# print(res)
 
-
-char_idx = {1: 1, 2: 2, 'EOS': 3}
-tem = [[1,2,4],[2,3,4],[3,4,5]]
-
-res = [targetTensor(i,char_idx) for i in tem]
-
-print(res)
+l
+print()

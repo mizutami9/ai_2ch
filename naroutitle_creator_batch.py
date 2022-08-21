@@ -75,6 +75,12 @@ def padding_data(in_data, char2idx):
     return new_in_data
 
 
+def data2batch(data, batch_size=256):
+    batch_data=[]
+    for i in range(0, len(data), batch_size):
+        batch_data.append(data[i:i+batch_size])
+
+
 def train_main(train_data, e_dim=256, h_dim=256):
     titles = []
     with open(train_data, 'r') as f:
@@ -111,6 +117,8 @@ def train_main(train_data, e_dim=256, h_dim=256):
 
         # data shuffle
         random.shuffle(names_idx)
+
+        names_idx = data2batch(names_idx)
 
         total_loss = 0
 
