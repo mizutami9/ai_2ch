@@ -13,9 +13,11 @@ import pprint
 from collections import defaultdict
 
 if __name__ == '__main__':
+
+    train_data = "2ch_scraped_list_extby_Anime.txt"
     # load dic
     # char2idx = pickle.load(open("titledata.txt_dic.p", "rb"))
-    char2idx = pickle.load(open("2ch_scraped_list_extby_YouTube.txt" + "_dic.p", "rb"))
+    char2idx = pickle.load(open(train_data + "_dic.p", "rb"))
     idx2char = {v: k for k, v in char2idx.items()}
     # build model
     model = nc.LSTM(input_dim=len(char2idx), embed_dim=256, hidden_dim=256)
@@ -23,11 +25,11 @@ if __name__ == '__main__':
     # with open('./models/model_narou_char_max_iter.pkl', 'rb') as f:
     #     # model = cloudpickle.load(f)
     # model.load_state_dict(torch.load('./models/titledata.txt' + "_000037.model"))
-    model.load_state_dict(torch.load('./models/2ch_scraped_list_extby_YouTube.txt' + "_000002.model"))
+    model.load_state_dict(torch.load('./models/' + train_data + "_000001.model"))
 
     counter_i = defaultdict(lambda: 0)
     counter = defaultdict(lambda: 0)
-    with open("2ch_scraped_list_extby_YouTube.txt", "r") as f:
+    with open(train_data, "r") as f:
         for line in f:
             counter_i[line[0]] += 1
             for l in line:
