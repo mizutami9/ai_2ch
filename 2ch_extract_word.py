@@ -8,4 +8,4 @@ def extract_word(file_name, ex_word):
 
 
 if __name__ == '__main__':
-    extract_word("2ch_scraped_list.txt", ["Anime", "アニメ", "anime"])
+    extract_word("2ch_scraped_list.txt", ["baseball", "野球"])

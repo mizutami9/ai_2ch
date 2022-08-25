@@ -122,4 +122,12 @@ def train_main(train_data, e_dim=256, h_dim=256):
 
 if __name__ == '__main__':
     # train_main("titledata.txt", e_dim=256, h_dim=256)
-    train_main("2ch_scraped_list_extby_Anime.txt", e_dim=256, h_dim=256)
+    # train_main("2ch_scraped_list_extby_App.txt", e_dim=256, h_dim=256)
+
+    train_list = ["2ch_scraped_list_extby_kyuubo.txt",
+                  "2ch_scraped_list_extby_moneeeyy.txt", "2ch_scraped_list_extby_nanj.txt",
+                  "2ch_scraped_list_extby_old.txt","2ch_scraped_list_extby_sosyage.txt",
+                                                   "2ch_scraped_list_extby_baseball.txt"
+                  ]
+    for i in train_list:
+        train_main(i, e_dim=256, h_dim=256)
