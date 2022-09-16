@@ -1,7 +1,8 @@
-# import MeCab
-#
-# m=MeCab.Tagger('-Ochasen')
-# print((MeCab.Tagger('-Owakati')).parse('すももももももももものうち'))
+import MeCab
+
+m=MeCab.Tagger('-Ochasen')
+mecabed = MeCab.Tagger('-Owakati').parse('すももももももももものうち')
+print(type(mecabed.split()))
 
 # import requests
 #
@@ -33,8 +34,8 @@
 # res = [targetTensor(i,char_idx) for i in tem]
 #
 # print(res)
-
-res=list(range(0, 100-49,49))
-res1=list(range(0, 100))
-
-print(list(range(0, 100-49,49)),res1[100//49*49:])
+#
+# res=list(range(0, 100-49,49))
+# res1=list(range(0, 100))
+#
+# print(list(range(0, 100-49,49)),res1[100//49*49:])
